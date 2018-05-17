@@ -50,22 +50,25 @@ def evaluate_model(model, testRatings, testNegatives, K, num_thread):
         ndcgs.append(ndcg)
     return (hits, ndcgs)
 
-def eval_one_rating(idx):
-    rating = _testRatings[idx]
-    items = _testNegatives[idx]
-    u = rating[0]
-    gtItem = rating[1]
-    items.append(gtItem)
+def eval_one_rating(idx): # do this once for each user
+    rating = _testRatings[idx]  # (user, item) pair with purchase
+    items = _testNegatives[idx] # product list of non-purchased item
+    u = rating[0]  # user_id
+    gtItem = rating[1]  # purchased item_id
+    items.append(gtItem)  # This is the item list with 99 non-purchased item and a purchased item
+
     # Get prediction scores
     map_item_score = {}
     users = np.full(len(items), u, dtype = 'int32')
-    # this guy did the same, using the logistic prob as preference/prob
+
+    # this guy did the same thing as my propensity modeling, using the logistic prob as preference/prob
+    # all 100 prediction prob of a single user
     predictions = _model.predict([users, np.array(items)],
                                  batch_size=100, verbose=0)
     for i in xrange(len(items)):
         item = items[i]
-        map_item_score[item] = predictions[i]
-    items.pop()
+        map_item_score[item] = predictions[i]  # this makes a dictionary for pred prob
+    items.pop() # remove and return the last real purchased item
 
     # Evaluate top rank list
     ranklist = heapq.nlargest(_K, map_item_score, key=map_item_score.get)

@@ -96,7 +96,7 @@ def get_train_instances(train, num_negatives):
         for t in xrange(num_negatives):
             j = np.random.randint(num_items)
             while train.has_key((u, j)):
-                # this line test if the sample is positive, if positive resample until it is negative 
+                # this line test if the sample is positive, if positive resample until it is negative
                 j = np.random.randint(num_items)
             user_input.append(u)
             item_input.append(j)
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     #p_norm = np.linalg.norm(model.get_layer('prediction').get_weights()[0])
     print('Init: HR = %.4f, NDCG = %.4f\t [%.1f s]' % (hr, ndcg, time()-t1))
 
-    # Train model
+    # Train mode￼﻿È_l
     best_hr, best_ndcg, best_iter = hr, ndcg, -1
     for epoch in xrange(epochs):
         t1 = time()
