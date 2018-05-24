@@ -148,7 +148,7 @@ if __name__ == '__main__':
     #p_norm = np.linalg.norm(model.get_layer('prediction').get_weights()[0])
     print('Init: HR = %.4f, NDCG = %.4f\t [%.1f s]' % (hr, ndcg, time()-t1))
 
-    # Train mode￼﻿È_l
+    # Train model
     best_hr, best_ndcg, best_iter = hr, ndcg, -1
     for epoch in xrange(epochs):
         t1 = time()
